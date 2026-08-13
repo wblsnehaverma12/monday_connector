@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Cron to process outbound queue (Every minute) -->
+        <record id="ir_cron_process_monday_queue" model="ir.cron">
+            <field name="name">Monday.com: Process Outbound Queue</field>
+            <field name="model_id" ref="model_monday_queue_job"/>
+            <field name="state">code</field>
+            <field name="code">model.process_queue()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">minutes</field>
+            <field name="active" eval="True"/>
+        </record>
+
+        <!-- Cron to sync Projects and Milestones (Every 5 minutes) -->
+        <record id="ir_cron_sync_monday_projects" model="ir.cron">
+            <field name="name">Monday.com: Scheduled Sync Projects</field>
+            <field name="model_id" ref="model_monday_instance"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_sync_projects_and_milestones()</field>
+            <field name="interval_number">5</field>
+            <field name="interval_type">minutes</field>
+            <field name="active" eval="True"/>
+        </record>
+
+        <!-- Cron to sync Project Tasks (Every minute) -->
+        <record id="ir_cron_sync_monday_tasks" model="ir.cron">
+            <field name="name">Monday.com: Scheduled Sync Tasks</field>
+            <field name="model_id" ref="model_monday_instance"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_sync_tasks()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">minutes</field>
+            <field name="active" eval="True"/>
+        </record>
+
+        <!-- Cron to retry failed queue jobs (Hourly) -->
+        <record id="ir_cron_retry_failed_monday_jobs" model="ir.cron">
+            <field name="name">Monday.com: Retry Failed Queue Jobs</field>
+            <field name="model_id" ref="model_monday_queue_job"/>
+            <field name="state">code</field>
+            <field name="code">model.retry_failed_jobs()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">hours</field>
+            <field name="active" eval="True"/>
+        </record>
+
+        <!-- Cron to clean up old sync logs (Daily) -->
+        <record id="ir_cron_cleanup_monday_logs" model="ir.cron">
+            <field name="name">Monday.com: Cleanup Sync Logs</field>
+            <field name="model_id" ref="model_monday_sync_log"/>
+            <field name="state">code</field>
+            <field name="code">model.cleanup_old_logs()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="active" eval="True"/>
+        </record>
+    </data>
+</odoo>

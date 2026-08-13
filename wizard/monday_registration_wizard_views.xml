@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_monday_registration_wizard_form" model="ir.ui.view">
+        <field name="name">monday.registration.wizard.form</field>
+        <field name="model">monday.registration.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Monday.com Registration">
+                <group>
+                    <field name="name" placeholder="e.g. My Monday Account"/>
+                    <field name="api_token" password="True" placeholder="Enter Monday.com API V2 Token"/>
+                </group>
+                <footer>
+                    <button name="action_establish_connection" string="Establish Connection" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_monday_registration_wizard" model="ir.actions.act_window">
+        <field name="name">Monday Registration</field>
+        <field name="res_model">monday.registration.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

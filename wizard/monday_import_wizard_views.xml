@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_monday_import_wizard_form" model="ir.ui.view">
+        <field name="name">monday.import.wizard.form</field>
+        <field name="model">monday.import.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Import Monday Data" class="monday-theme-wizard">
+                <div class="alert alert-info" role="alert">
+                    Select the entities you want to import from Monday.com and choose your Monday Account.
+                </div>
+                <group>
+                    <group string="Entities to Import">
+                        <field name="import_boards"/>
+                        <field name="import_groups"/>
+                        <field name="import_items"/>
+                        <field name="import_users"/>
+                    </group>
+                    <group string="Account Settings">
+                        <field name="instance_id" options="{'no_create': True, 'no_edit': True}"/>
+                        <field name="board_id" 
+                               invisible="not import_groups and not import_items" 
+                               options="{'no_create': True, 'no_edit': True}"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_execute_import" string="Import" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_monday_import_wizard" model="ir.actions.act_window">
+        <field name="name">Import Monday Data</field>
+        <field name="res_model">monday.import.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Dummy view/action for monday.instance.import.wizard to prevent security/loading errors -->
+    <record id="view_monday_instance_import_wizard_form" model="ir.ui.view">
+        <field name="name">monday.instance.import.wizard.form</field>
+        <field name="model">monday.instance.import.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Import Settings">
+                <group>
+                    <field name="instance_id" readonly="1"/>
+                </group>
+                <footer>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_monday_instance_import_wizard" model="ir.actions.act_window">
+        <field name="name">Import Settings</field>
+        <field name="res_model">monday.instance.import.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+    <record id="view_monday_import_summary_wizard_form" model="ir.ui.view">
+        <field name="name">monday.import.summary.wizard.form</field>
+        <field name="model">monday.import.summary.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Import Status" class="monday-theme-wizard monday-summary-wizard">
+                <field name="summary_html" readonly="1" nolabel="1"/>
+                <footer>
+                    <button string="Close" class="btn-primary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

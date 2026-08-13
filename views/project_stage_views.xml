@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Project Task Stage View Inheritance -->
+    <record id="view_project_task_type_form_inherit_monday" model="ir.ui.view">
+        <field name="name">project.task.type.form.inherit.monday</field>
+        <field name="model">project.task.type</field>
+        <field name="inherit_id" ref="project.task_type_edit"/>
+        <field name="arch" type="xml">
+            <group position="inside">
+                <group string="Monday.com Integration">
+                    <field name="monday_instance_id"/>
+                    <field name="monday_group_id"/>
+                </group>
+            </group>
+        </field>
+    </record>
+
+    <!-- Project Task Form View Inheritance -->
+    <record id="view_task_form2_inherit_monday" model="ir.ui.view">
+        <field name="name">project.task.form.inherit.monday</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Monday Details" name="monday_details">
+                    <group>
+                        <group>
+                            <field name="monday_instance_id" options="{'no_create': True}"/>
+                            <field name="monday_item_id"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

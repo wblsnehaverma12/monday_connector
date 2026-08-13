@@ -1,0 +1,636 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ======================================================================= -->
+    <!-- MONDAY INSTANCE VIEWS                                                    -->
+    <!-- ======================================================================= -->
+    <record id="view_monday_instance_tree" model="ir.ui.view">
+        <field name="name">monday.instance.tree</field>
+        <field name="model">monday.instance</field>
+        <field name="arch" type="xml">
+            <list string="Monday Accounts">
+                <field name="name"/>
+                <field name="monday_account_id"/>
+                <field name="sync_interval"/>
+                <field name="status" widget="badge"
+                       decoration-success="status == 'connected'"
+                       decoration-danger="status == 'error'"
+                       decoration-warning="status == 'draft'"/>
+                <field name="last_sync"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_monday_instance_form" model="ir.ui.view">
+        <field name="name">monday.instance.form</field>
+        <field name="model">monday.instance</field>
+        <field name="arch" type="xml">
+            <form string="Monday Account">
+                <header>
+                    <button name="test_connection" string="Test Connection" type="object" class="btn-primary"
+                            icon="fa-refresh"/>
+                    <field name="status" widget="statusbar" statusbar_visible="draft,connected,error"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. Production Monday Account"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="API Configuration">
+                            <field name="api_token" password="True"/>
+                            <field name="api_version"/>
+                            <field name="base_url"/>
+                            <field name="monday_account_id"/>
+                        </group>
+                        <group string="Integration Parameters">
+                            <field name="sync_interval"/>
+                            <field name="last_sync" readonly="1"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_monday_instance_kanban" model="ir.ui.view">
+        <field name="name">monday.instance.kanban</field>
+        <field name="model">monday.instance</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile" sample="1">
+                <field name="name"/>
+                <field name="monday_account_id"/>
+                <field name="status"/>
+                <field name="sync_interval"/>
+                <field name="last_sync"/>
+                <field name="active"/>
+                <field name="boards_count"/>
+                <field name="users_count"/>
+                <field name="items_count"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_global_click overflow-hidden rounded-4 bg-white"
+                             style="border:1px solid #E6E9EF;
+                                    box-shadow:0 4px 12px rgba(0,0,0,.08);
+                                    transition:all .25s ease;">
+
+                            <!-- Header -->
+                            <div class="p-3 text-white"
+                                 style="background:linear-gradient(135deg,#FF3D57,#E2445C);">
+
+                                <div class="d-flex justify-content-between align-items-center">
+
+                                    <div class="d-flex align-items-center">
+
+                                        <div>
+
+                                            <div class="fw-bold fs-4 text-truncate">
+                                                <field name="name"/>
+                                            </div>
+
+                                            <div style="font-size:13px;opacity:.85;">
+                                                Monday.com Workspace
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <!-- Status -->
+
+                                    <div>
+
+                                        <span t-if="record.status.raw_value == 'connected'"
+                                              class="fw-bold"
+                                              style="color:#00FF9D;font-size:14px;">
+                                            ● Connected
+                                        </span>
+
+                                        <span t-elif="record.status.raw_value == 'error'"
+                                              class="fw-bold"
+                                              style="color:#FF6B81;font-size:14px;">
+                                            ● Error
+                                        </span>
+
+                                        <span t-else=""
+                                              class="fw-bold"
+                                              style="color:#FFC048;font-size:14px;">
+                                            ● Draft
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <!-- Body -->
+
+                            <div class="p-3">
+
+                                <!-- Info Cards -->
+
+                                <div class="row g-3">
+
+                                    <div class="col-6">
+
+                                        <div class="text-muted small mb-1">
+                                            Account ID
+                                        </div>
+
+                                        <div class="fw-bold text-dark fs-5">
+                                            <field name="monday_account_id"/>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-6">
+
+                                        <div class="text-muted small mb-1">
+                                            Sync Every
+                                        </div>
+
+                                        <div class="fw-bold text-dark fs-5">
+                                            <field name="sync_interval"/>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <hr style="border-top:1px solid #E6E9EF; margin:12px 0;"/>
+
+                                <!-- Last Sync -->
+
+                                <div>
+
+                                    <div class="text-muted small mb-1">
+                                        Last Sync
+                                    </div>
+
+                                    <div class="fw-semibold text-dark fs-6 d-flex align-items-center">
+
+                                        <span class="text-success me-1 fw-bold">✓</span>
+
+                                        <t t-if="record.last_sync.raw_value">
+                                            <field name="last_sync"/>
+                                        </t>
+                                        <t t-else="">
+                                            Never Synced
+                                        </t>
+
+                                    </div>
+
+                                </div>
+
+                                <hr style="border-top:1px solid #E6E9EF; margin:12px 0;"/>
+
+                                <!-- Counts Section -->
+                                <div class="row text-center g-2">
+
+                                    <div class="col-4">
+
+                                        <div class="p-2 rounded-3" style="background:#FFFDF0; border:1px solid #FFB300;">
+
+                                            <div class="text-muted small" style="font-size: 11px;">
+                                                Boards
+                                            </div>
+
+                                            <div class="fw-bold fs-5 mt-1" style="color:#C48400;">
+                                                <field name="boards_count"/>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-4">
+
+                                        <div class="p-2 rounded-3" style="background:#FFFDF0; border:1px solid #FFB300;">
+
+                                            <div class="text-muted small" style="font-size: 11px;">
+                                                Users
+                                            </div>
+
+                                            <div class="fw-bold fs-5 mt-1" style="color:#C48400;">
+                                                <field name="users_count"/>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-4">
+
+                                        <div class="p-2 rounded-3" style="background:#FFFDF0; border:1px solid #FFB300;">
+
+                                            <div class="text-muted small" style="font-size: 11px;">
+                                                Items
+                                            </div>
+
+                                            <div class="fw-bold fs-5 mt-1" style="color:#C48400;">
+                                                <field name="items_count"/>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="action_monday_instance" model="ir.actions.act_window">
+        <field name="name">Monday Accounts</field>
+        <field name="res_model">monday.instance</field>
+        <field name="view_mode">kanban,list,form</field>
+    </record>
+
+    <!-- ======================================================================= -->
+    <!-- MONDAY BOARD VIEWS                                                       -->
+    <!-- ======================================================================= -->
+    <record id="view_monday_board_tree" model="ir.ui.view">
+        <field name="name">monday.board.tree</field>
+        <field name="model">monday.board</field>
+        <field name="arch" type="xml">
+            <list string="Monday Boards" create="false">
+                <field name="name"/>
+                <field name="monday_board_id"/>
+                <field name="board_type"/>
+                <field name="odoo_model_id"/>
+                <field name="odoo_project_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_monday_board_form" model="ir.ui.view">
+        <field name="name">monday.board.form</field>
+        <field name="model">monday.board</field>
+        <field name="arch" type="xml">
+            <form string="Monday Board" create="false">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="instance_id"/>
+                            <field name="monday_board_id"/>
+                            <field name="board_type"/>
+                        </group>
+                        <group>
+                            <field name="odoo_model_id" options="{'no_create': True, 'no_edit': True}"/>
+                            <field name="odoo_project_id" invisible="odoo_model_id != %(project.model_project_task)d"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Columns">
+                            <field name="column_ids" readonly="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="monday_column_id"/>
+                                    <field name="column_type"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Groups">
+                            <field name="group_ids" readonly="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="monday_group_id"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_monday_board" model="ir.actions.act_window">
+        <field name="name">Boards</field>
+        <field name="res_model">monday.board</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ======================================================================= -->
+    <!-- MONDAY MAPPING VIEWS                                                     -->
+    <!-- ======================================================================= -->
+    <record id="view_monday_mapping_tree" model="ir.ui.view">
+        <field name="name">monday.mapping.tree</field>
+        <field name="model">monday.mapping</field>
+        <field name="arch" type="xml">
+            <list string="Field Mappings" create="false">
+                <field name="monday_board_id"/>
+                <field name="odoo_model_id"/>
+                <field name="odoo_field_id"/>
+                <field name="monday_column_id"/>
+                <field name="monday_column_type"/>
+                <field name="direction"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_monday_mapping_form" model="ir.ui.view">
+        <field name="name">monday.mapping.form</field>
+        <field name="model">monday.mapping</field>
+        <field name="arch" type="xml">
+            <form string="Field Mapping">
+                <sheet>
+                    <group>
+                        <group string="Odoo Config">
+                            <field name="odoo_model_id" options="{'no_create': True}"/>
+                            <field name="odoo_model_name" invisible="1"/>
+                            <field name="odoo_field_id" domain="[('model_id', '=', odoo_model_id)]"
+                                   options="{'no_create': True}"/>
+                        </group>
+                        <group string="Monday Config">
+                            <field name="instance_id"/>
+                            <field name="monday_board_id" domain="[('instance_id', '=', instance_id)]"/>
+                            <field name="monday_column_id"/>
+                            <field name="monday_column_type"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Sync Direction">
+                            <field name="direction" widget="radio"/>
+                            <field name="required"/>
+                            <field name="default_value"/>
+                        </group>
+                        <group string="Transformation">
+                            <field name="transform_function" placeholder="result = value.strip().upper()" widget="ace"
+                                   xml:id="ace_transform"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_monday_mapping" model="ir.actions.act_window">
+        <field name="name">Field Mappings</field>
+        <field name="res_model">monday.mapping</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ======================================================================= -->
+    <!-- MONDAY RECORD MAPPING VIEWS                                              -->
+    <!-- ======================================================================= -->
+<!--    <record id="view_monday_record_mapping_tree" model="ir.ui.view">-->
+<!--        <field name="name">monday.record.mapping.tree</field>-->
+<!--        <field name="model">monday.record.mapping</field>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <list string="Record Mappings" create="false" edit="false">-->
+<!--                <field name="odoo_model"/>-->
+<!--                <field name="odoo_id"/>-->
+<!--                <field name="monday_item_id"/>-->
+<!--                <field name="monday_board_id"/>-->
+<!--                <field name="sync_status" widget="badge"-->
+<!--                       decoration-success="sync_status == 'synced'"-->
+<!--                       decoration-warning="sync_status == 'pending'"-->
+<!--                       decoration-danger="sync_status == 'failed'"/>-->
+<!--                <field name="last_sync"/>-->
+<!--            </list>-->
+<!--        </field>-->
+<!--    </record>-->
+
+<!--    <record id="action_monday_record_mapping" model="ir.actions.act_window">-->
+<!--        <field name="name">Record Mappings</field>-->
+<!--        <field name="res_model">monday.record.mapping</field>-->
+<!--        <field name="view_mode">list</field>-->
+<!--    </record>-->
+
+    <!-- ======================================================================= -->
+    <!-- MONDAY SYNC LOG VIEWS                                                   -->
+    <!-- ======================================================================= -->
+    <record id="view_monday_sync_log_tree" model="ir.ui.view">
+        <field name="name">monday.sync.log.tree</field>
+        <field name="model">monday.sync.log</field>
+        <field name="arch" type="xml">
+            <list string="Sync Logs" create="false" edit="false">
+                <field name="create_date" string="Timestamp"/>
+                <field name="name"/>
+                <field name="direction" widget="badge"/>
+                <field name="operation"/>
+                <field name="duration" sum="Total Duration"/>
+                <field name="status" widget="badge"
+                       decoration-success="status == 'success'"
+                       decoration-danger="status == 'failed'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_monday_sync_log_form" model="ir.ui.view">
+        <field name="name">monday.sync.log.form</field>
+        <field name="model">monday.sync.log</field>
+        <field name="arch" type="xml">
+            <form string="Sync Log Details" create="false" edit="false">
+                <header>
+                    <button name="action_archive" string="Archive" type="object" class="btn-secondary"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="instance_id"/>
+                            <field name="direction"/>
+                            <field name="operation"/>
+                        </group>
+                        <group>
+                            <field name="duration"/>
+                            <field name="status"/>
+                            <field name="create_date" string="Logged At"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Error / Traceback" invisible="status == 'success'">
+                            <group>
+                                <field name="error_message" readonly="1"/>
+                                <field name="traceback" readonly="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ======================================================================= -->
+    <!-- MONDAY SYNC ENTRY VIEWS                                                 -->
+    <!-- ======================================================================= -->
+    <record id="view_monday_sync_entry_tree" model="ir.ui.view">
+        <field name="name">monday.sync.entry.list</field>
+        <field name="model">monday.sync.entry</field>
+        <field name="arch" type="xml">
+            <list string="Sync Entries" create="false" edit="false" delete="false">
+                <field name="name"/>
+                <field name="request_date" string="Request Date and Time"/>
+                <field name="operation"/>
+                <field name="import_action" string="Import Action"/>
+                <field name="action_done" string="Action Done"/>
+                <field name="instance_id" string="Account"/>
+                <field name="status" widget="badge"
+                       decoration-success="status == 'success'"
+                       decoration-danger="status == 'failed'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_monday_sync_entry_form" model="ir.ui.view">
+        <field name="name">monday.sync.entry.form</field>
+        <field name="model">monday.sync.entry</field>
+        <field name="arch" type="xml">
+            <form string="Sync Entry Details" create="false" edit="false" delete="false">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" readonly="1"/>
+                            <field name="request_date" readonly="1"/>
+                            <field name="operation" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="import_action" readonly="1"/>
+                            <field name="action_done" readonly="1"/>
+                            <field name="instance_id" readonly="1"/>
+                            <field name="status" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_monday_sync_entry" model="ir.actions.act_window">
+        <field name="name">Sync Entries</field>
+        <field name="res_model">monday.sync.entry</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_monday_sync_log" model="ir.actions.act_window">
+        <field name="name">Sync Logs</field>
+        <field name="res_model">monday.sync.log</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ======================================================================= -->
+    <!-- MONDAY QUEUE JOB VIEWS                                                   -->
+    <!-- ======================================================================= -->
+    <record id="view_monday_queue_job_tree" model="ir.ui.view">
+        <field name="name">monday.queue.job.tree</field>
+        <field name="model">monday.queue.job</field>
+        <field name="arch" type="xml">
+            <list string="Queue Jobs" create="false">
+                <field name="create_date" string="Enqueued At"/>
+                <field name="name"/>
+                <field name="model_name"/>
+                <field name="record_id"/>
+                <field name="operation"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'done'"
+                       decoration-warning="state == 'pending'"
+                       decoration-danger="state == 'failed'"
+                       decoration-muted="state == 'draft'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_monday_queue_job_form" model="ir.ui.view">
+        <field name="name">monday.queue.job.form</field>
+        <field name="model">monday.queue.job</field>
+        <field name="arch" type="xml">
+            <form string="Queue Job Details" create="false">
+                <header>
+                    <button name="action_process_job" string="Force Process Now" type="object" class="btn-primary"
+                            invisible="state in ['done']"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,pending,done,failed"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" readonly="1"/>
+                            <field name="instance_id" readonly="1"/>
+                            <field name="model_name" readonly="1"/>
+                            <field name="record_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="operation" readonly="1"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Payload JSON">
+                            <field name="payload" widget="ace" readonly="1"/>
+                        </page>
+                        <page string="Execution Error" invisible="state != 'failed'">
+                            <group>
+                                <field name="error_message" readonly="1"/>
+                                <field name="traceback" readonly="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_monday_queue_job" model="ir.actions.act_window">
+        <field name="name">Queue Jobs</field>
+        <field name="res_model">monday.queue.job</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+<!--    <record id="action_monday_cron_settings" model="ir.actions.act_window">-->
+<!--        <field name="name">Sync Settings</field>-->
+<!--        <field name="res_model">ir.cron</field>-->
+<!--        <field name="view_mode">list,form</field>-->
+<!--        <field name="domain">[('name', 'ilike', 'Monday.com')]</field>-->
+<!--    </record>-->
+
+    <!-- ======================================================================= -->
+    <!-- MENUS CONFIGURATION                                                      -->
+    <!-- ======================================================================= -->
+    <!-- Root Menu -->
+    <menuitem id="menu_monday_root" name="Monday Integration"
+              web_icon="wbl_monday_connector,static/description/icon.png" action="action_monday_instance"
+              sequence="60"/>
+
+    <!-- Submenus -->
+    <menuitem id="menu_monday_projects" name="Projects" parent="menu_monday_root"
+              action="project.open_view_project_all" sequence="5"/>
+    <menuitem id="menu_monday_tasks" name="Tasks" parent="menu_monday_root"
+              action="project.action_view_all_task" sequence="6"/>
+    <menuitem id="menu_monday_task_stages" name="Task Stages" parent="menu_monday_root"
+              action="project.open_task_type_form" sequence="7"/>
+    <menuitem id="menu_monday_configuration" name="Configuration" parent="menu_monday_root" sequence="10"/>
+    <menuitem id="menu_monday_import_data" name="Import Monday Data" parent="menu_monday_root"
+              action="action_monday_import_wizard" sequence="20"/>
+    <menuitem id="menu_monday_logs" name="Sync Logs" parent="menu_monday_root" sequence="30"/>
+
+    <!-- Configuration Submenus -->
+    <menuitem id="menu_monday_config_boards" name="Monday Boards" parent="menu_monday_configuration"
+              action="action_monday_board" sequence="10"/>
+    <menuitem id="menu_monday_config_mappings" name="Field Mappings" parent="menu_monday_configuration"
+              action="action_monday_mapping" sequence="20"/>
+
+
+    <!-- Sync Logs Submenus -->
+    <menuitem id="menu_monday_sync_history" name="Sync History" parent="menu_monday_logs"
+              action="action_monday_sync_entry" sequence="10"/>
+    <menuitem id="menu_monday_sync_queue" name="Queue" parent="menu_monday_logs" action="action_monday_queue_job"
+              sequence="20"/>
+</odoo>

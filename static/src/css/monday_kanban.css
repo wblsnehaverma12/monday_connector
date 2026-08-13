@@ -1,0 +1,258 @@
+.o_kanban_record {
+    border-radius: 18px;
+    transition: all .25s ease;
+}
+
+.o_kanban_record:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(255, 61, 87, .18) !important;
+}
+
+.o_kanban_record .badge {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.o_kanban_record .rounded-3 {
+    transition: .2s ease;
+}
+
+.o_kanban_record .rounded-3:hover {
+    background: #FFF0F2 !important;
+}
+
+/* Monday Wizard Theme Styling */
+.monday-theme-wizard .form-check-input {
+    border-radius: 4px;
+    border: 2px solid #ced4da;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+/* Individual entity checkbox checked colors matching Monday.com brand palette */
+.monday-theme-wizard div[name="import_boards"] input:checked,
+.monday-theme-wizard [name="import_boards"] input:checked {
+    background-color: #ff3d57 !important;
+    border-color: #ff3d57 !important;
+    box-shadow: 0 0 0 0.2rem rgba(255, 61, 87, 0.25) !important;
+}
+
+.monday-theme-wizard div[name="import_groups"] input:checked,
+.monday-theme-wizard [name="import_groups"] input:checked {
+    background-color: #ffcb00 !important;
+    border-color: #ffcb00 !important;
+    box-shadow: 0 0 0 0.2rem rgba(255, 203, 0, 0.25) !important;
+}
+
+.monday-theme-wizard div[name="import_items"] input:checked,
+.monday-theme-wizard [name="import_items"] input:checked {
+    background-color: #00c875 !important;
+    border-color: #00c875 !important;
+    box-shadow: 0 0 0 0.2rem rgba(0, 200, 117, 0.25) !important;
+}
+
+.monday-theme-wizard div[name="import_users"] input:checked,
+.monday-theme-wizard [name="import_users"] input:checked {
+    background-color: #0086f0 !important;
+    border-color: #0086f0 !important;
+    box-shadow: 0 0 0 0.2rem rgba(0, 134, 240, 0.25) !important;
+}
+
+/* Custom primary import button */
+.monday-theme-wizard .btn-primary,
+.modal-content:has(.monday-theme-wizard) .btn-primary {
+    background-color: #ff3d57 !important;
+    border-color: #ff3d57 !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    border-radius: 6px !important;
+    padding: 6px 16px !important;
+    transition: background-color 0.2s, border-color 0.2s !important;
+}
+
+.monday-theme-wizard .btn-primary:hover,
+.monday-theme-wizard .btn-primary:focus,
+.monday-theme-wizard .btn-primary:active,
+.modal-content:has(.monday-theme-wizard) .btn-primary:hover,
+.modal-content:has(.monday-theme-wizard) .btn-primary:focus,
+.modal-content:has(.monday-theme-wizard) .btn-primary:active {
+    background-color: #e0354c !important;
+    border-color: #e0354c !important;
+}
+
+/* Custom secondary cancel button */
+.monday-theme-wizard .btn-secondary,
+.modal-content:has(.monday-theme-wizard) .btn-secondary {
+    background-color: #f8f9fa !important;
+    border-color: #ced4da !important;
+    color: #495057 !important;
+    font-weight: 600 !important;
+    border-radius: 6px !important;
+    padding: 6px 16px !important;
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s !important;
+}
+
+.monday-theme-wizard .btn-secondary:hover,
+.monday-theme-wizard .btn-secondary:focus,
+.monday-theme-wizard .btn-secondary:active,
+.modal-content:has(.monday-theme-wizard) .btn-secondary:hover,
+.modal-content:has(.monday-theme-wizard) .btn-secondary:focus,
+.modal-content:has(.monday-theme-wizard) .btn-secondary:active {
+    background-color: #e2e6ea !important;
+    border-color: #bdc1c6 !important;
+    color: #212529 !important;
+}
+
+/* Alert info pink tone */
+.monday-theme-wizard .alert-info {
+    background-color: #fff0f2 !important;
+    border-color: #ffccd3 !important;
+    color: #c02d41 !important;
+    border-radius: 8px !important;
+    font-weight: 500 !important;
+}
+
+/* Preserve line breaks in Odoo notifications */
+.o_notification_content,
+.o_notification_body,
+.o_notification_message,
+.o_notification_text,
+.o_notification {
+    white-space: pre-line !important;
+}
+
+/* Style for HTML field wrapper in summary wizard */
+.monday-summary-wizard .o_field_html,
+.monday-summary-wizard .o_field_widget {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    display: block !important;
+}
+
+.monday-summary-container {
+    padding: 15px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #ffffff;
+}
+
+.summary-header {
+    color: #2b2b2b;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    margin-top: 0;
+}
+
+.summary-grid {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.summary-card {
+    flex: 1;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 12px;
+    background-color: #ffffff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    min-height: 120px;
+    min-width: 0;
+}
+
+/* Card Header Colors */
+.summary-card .card-header {
+    font-weight: 700 !important;
+    font-size: 15px !important;
+    margin-bottom: 8px !important;
+    padding: 0 0 6px 0 !important;
+    border-bottom: 2px solid !important;
+    background: transparent !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.board-card {
+    background-color: #fff0f2 !important;
+    border-color: #ffccd3 !important;
+}
+.board-card .card-header {
+    color: #ff3d57 !important;
+    border-color: #ff3d57 !important;
+}
+
+.group-card {
+    background-color: #fffdf0 !important;
+    border-color: #ffeeb3 !important;
+}
+.group-card .card-header {
+    color: #b38600 !important;
+    border-color: #ffcb00 !important;
+}
+
+.item-card {
+    background-color: #f0fdf4 !important;
+    border-color: #bbf7d0 !important;
+}
+.item-card .card-header {
+    color: #00874e !important;
+    border-color: #00c875 !important;
+}
+
+.user-card {
+    background-color: #eff6ff !important;
+    border-color: #bfdbfe !important;
+}
+.user-card .card-header {
+    color: #0056b3 !important;
+    border-color: #0086f0 !important;
+}
+
+.summary-card .card-body {
+    font-size: 13px;
+    color: #4a5568;
+    line-height: 1.6;
+}
+
+.summary-card .board-info {
+    font-size: 11px;
+    color: #718096;
+    margin-bottom: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+.summary-divider {
+    border-top: 1px solid #e2e8f0;
+    margin: 15px 0;
+}
+
+.summary-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    color: #4a5568;
+    font-weight: 500;
+}
+
+.footer-stats {
+    display: flex;
+    gap: 30px;
+}
+
+.footer-status {
+    color: #10b981;
+    font-weight: 600;
+}
